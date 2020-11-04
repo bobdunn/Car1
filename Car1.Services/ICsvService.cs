@@ -5,6 +5,6 @@ namespace Car1.Services
 {
     public interface ICsvService
     {
-        public Task ProcessCsv(string csvText);
+        public void ProcessCsv(string csvText);
     }
 }

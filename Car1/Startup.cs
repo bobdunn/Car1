@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using Car1.Data;
+using Car1.Domain;
+using Car1.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +30,12 @@ namespace Car1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton<ICsvService, CsvService>();
+            services.AddSingleton<ICsvParser, CsvParser>();
+            services.AddSingleton<ISalesAndSpendDao, SalesAndSpendDao>();
+            services.AddSingleton<IConnectionManager, ConnectionManager>();
+            services.AddSingleton<ISettings, Settings>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

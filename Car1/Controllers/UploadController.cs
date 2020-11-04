@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Car1.Services;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace Car1.Controllers
             using (var reader = new StreamReader(Request.Body))
             {
                 var csvText = await reader.ReadToEndAsync();
-                await _csvService.ProcessCsv(csvText);
+                _csvService.ProcessCsv(csvText);
             }
 
             return new StatusCodeResult(StatusCodes.Status202Accepted);

@@ -15,7 +15,10 @@ namespace Car1.Data
 
         public SqlConnection GetConnection()
         {
-            return new SqlConnection(_settings.ConnectionString);
+            var connectionString = _settings.GetConnectionString();
+            var connection= new SqlConnection(connectionString);
+            connection.Open();
+            return connection;
         }
     }
 

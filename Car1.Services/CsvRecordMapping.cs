@@ -1,4 +1,5 @@
-﻿using TinyCsvParser.Mapping;
+﻿using Car1.Domain;
+using TinyCsvParser.Mapping;
 
 namespace Car1.Services
 {

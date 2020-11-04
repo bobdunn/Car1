@@ -1,12 +1,19 @@
 ﻿using Car1.Domain;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Car1
 {
     public class Settings : ISettings
     {
-        public string ConnectionString => ConfigurationManager.ConnectionStrings["Car1Db"].ConnectionString;
-
+        public string GetConnectionString()
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            return configuration.GetConnectionString("Car1Db");
+        }
     }
 
 }

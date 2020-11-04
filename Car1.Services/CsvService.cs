@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Car1.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,15 +10,19 @@ namespace Car1.Services
     public class CsvService : ICsvService
     {
         private readonly ICsvParser _csvParser;
+        private readonly ISalesAndSpendDao _salesAndSpendDao;
 
-        public CsvService(ICsvParser csvParser)
+        public CsvService(ICsvParser csvParser, ISalesAndSpendDao salesAndSpendDao)
         {
             _csvParser = csvParser;
+            _salesAndSpendDao = salesAndSpendDao;
         }
 
-        public  async Task ProcessCsv(string csvText)
+        public void ProcessCsv(string csvText)
         {
-            _csvParser.ParseCsvRecord(csvText);
+            var records = _csvParser.ParseCsvRecord(csvText);
+            _salesAndSpendDao.InsertFromCsvRecords(records);
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Car1.Domain;
+﻿using Car1.Data;
+using Car1.Domain;
 using Car1.Services;
 using FluentAssertions;
 using Moq;
@@ -13,22 +14,36 @@ namespace Car1.Tests
     {
         ICsvService _csvService;
         Mock<ICsvParser> _mockCsvParser;
+        Mock<ISalesAndSpendDao> _mockSalesAndSpendDao;
 
         public CsvServiceTests()
         {
             _mockCsvParser = new Mock<ICsvParser>();
-            _csvService = new CsvService(_mockCsvParser.Object);
+            _mockSalesAndSpendDao = new Mock<ISalesAndSpendDao>();
+            _csvService = new CsvService(_mockCsvParser.Object,_mockSalesAndSpendDao.Object);
         }
 
         [Fact]
         public void ProcessCsvParsesInputFile()
         {
             string content = "";
-            _mockCsvParser.Setup(x => x.ParseCsvRecord(content)).Returns(new List<CsvRecord>());
+            
+            var records = new List<CsvRecord> { new CsvRecord
+            {
+                AdvertisingSpend = 7,
+                Country = "Country1",
+                Make = "Make",
+                Model = "Model",
+                UnitsSold = 1,
+                YearMonth = "200812"
+            } };
+            _mockCsvParser.Setup(x => x.ParseCsvRecord(content)).Returns(records);
+            _mockSalesAndSpendDao.Setup(x => x.InsertFromCsvRecords(records));
 
             _csvService.ProcessCsv(content);
 
             _mockCsvParser.VerifyAll();
+            _mockSalesAndSpendDao.VerifyAll();
 
         }
     }
