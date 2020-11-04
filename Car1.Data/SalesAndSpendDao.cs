@@ -15,6 +15,26 @@ namespace Car1.Data
             _connectionManager = connectionManager;
         }
 
+        public dynamic GetAllSalesAndSpendData()
+        {
+            using(var connection = _connectionManager.GetConnection())
+            {
+               return connection.Query(@"
+select 
+	Country.[Name] Country,
+	Model.[Name] Model, 
+	Make.[Name] Make,
+	[Year],
+	[Month],
+	UnitsSold,
+	AdvertisingSpend
+from SalesAndSpend
+	join Model   on SalesAndSpend.ModelId   = Model.ModelId
+	join Make    on SalesAndSpend.MakeId    = Make.MakeId
+	join Country on SalesAndSpend.CountryId = Country.CountryId");
+            }
+        }
+
         public void InsertFromCsvRecords(List<CsvRecord> records)
         {
             using (var connection = _connectionManager.GetConnection())
@@ -41,5 +61,6 @@ namespace Car1.Data
     public interface ISalesAndSpendDao
     {
         void InsertFromCsvRecords(List<CsvRecord> records);
+        dynamic GetAllSalesAndSpendData();
     }
 }
